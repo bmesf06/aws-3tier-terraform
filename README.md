@@ -1,46 +1,68 @@
-\# AWS 3-Tier Infrastructure as Code (Project 2)
+\# AWS 3-Tier Architecture with Terraform
 
 
 
-A fully automated 3-tier AWS architecture deployed using Terraform. This project demonstrates high availability, tiered security, and automated resource provisioning.
+
+
+\## Overview
 
 
 
-\## 🏗️ Architecture
-
-\- \*\*Networking:\*\* VPC with 4 subnets (2 Public, 2 Private) across multiple Availability Zones.
-
-\- \*\*Compute:\*\* Private EC2 instance running Nginx via User Data.
-
-\- \*\*Load Balancing:\*\* Internet-facing ALB routing traffic to private targets.
-
-\- \*\*Database:\*\* Managed RDS MySQL instance in a private subnet.
-
-\- \*\*Storage:\*\* S3 Bucket for logs/assets with a unique naming scheme.
-
-\- \*\*Monitoring:\*\* CloudWatch CPU Utilization alarms.
+This project deploys a three-tier web application architecture on AWS using Terraform. It includes:
 
 
 
-\## 🚀 How to Deploy
+\- Networking: VPC, 2 public and 2 private subnets across 2 AZs, Internet Gateway, routing.
 
-1\. Configure AWS Credentials (`aws configure`).
+\- Security: Security groups for ALB, web tier, and RDS (tiered access).
 
-2\. Navigate to the `/infra` directory.
+\- Compute: EC2 web server in a private subnet with Nginx installed via user data.
 
-3\. Run `terraform init`.
+\- Load Balancing: Internet-facing Application Load Balancer with target group and HTTP listener.
 
-4\. Run `terraform apply -auto-approve`.
+\- Data: MySQL RDS instance in private subnets, only accessible from the web tier SG.
+
+\- Storage: S3 bucket for logs or static assets.
+
+\- Monitoring: CloudWatch CPU alarm on the web instance.
 
 
 
-\## 🛠️ Tech Stack
+\## Tech Stack
 
-\- Terraform (IaC)
 
-\- AWS (EC2, VPC, RDS, S3, ALB, CloudWatch)
 
-\- Git/GitHub
+\- AWS: VPC, EC2, ALB, RDS (MySQL), S3, CloudWatch.
+
+\- Terraform: AWS provider, remote state local.
+
+
+
+
+
+
+
+
+
+\## How to Deploy
+
+
+
+1\. Clone this repo.
+
+2\. Configure AWS credentials (e.g., via `aws configure`) for a user with permissions to create VPC/EC2/RDS/S3.
+
+3\. From the `infra` directory:
+
+
+
+&nbsp;  ```bash
+
+&nbsp;  terraform init
+
+&nbsp;  terraform plan
+
+&nbsp;  terraform apply
 
 
 
