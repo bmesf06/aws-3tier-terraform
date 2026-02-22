@@ -30,7 +30,7 @@ resource "aws_security_group" "db_private" {
 
 # DB subnet group using your two private subnets
 resource "aws_db_subnet_group" "db_subnets" {
-  name       = "proj2-db-subnets"
+  name = "proj2-db-subnets"
   subnet_ids = [
     aws_subnet.private_a.id,
     aws_subnet.private_b.id
@@ -43,22 +43,22 @@ resource "aws_db_subnet_group" "db_subnets" {
 
 # RDS instance (MySQL, single-AZ, free-tier-ish)
 resource "aws_db_instance" "app_db" {
-  identifier             = "proj2-app-db"
-  engine                 = "mysql"
-  engine_version         = "8.0"
-  instance_class         = "db.t3.micro"
-  allocated_storage      = 20
-  storage_type           = "gp2"
+  identifier        = "proj2-app-db"
+  engine            = "mysql"
+  engine_version    = "8.0"
+  instance_class    = "db.t3.micro"
+  allocated_storage = 20
+  storage_type      = "gp2"
 
-  db_name                = "appdb"
-  username               = "appuser"
-  password               = "AppUserPassw0rd!"  # for real use, move to tfvars or env
+  db_name  = "appdb"
+  username = "appuser"
+  password = "AppUserPassw0rd!" # for real use, move to tfvars or env
 
   db_subnet_group_name   = aws_db_subnet_group.db_subnets.name
   vpc_security_group_ids = [aws_security_group.db_private.id]
 
-  publicly_accessible    = false
-  skip_final_snapshot    = true
+  publicly_accessible = false
+  skip_final_snapshot = true
 
   backup_retention_period = 1
 

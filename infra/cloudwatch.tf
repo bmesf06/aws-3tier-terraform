@@ -8,13 +8,13 @@ resource "aws_cloudwatch_metric_alarm" "web_cpu_high" {
   statistic           = "Average"
   threshold           = 70
 
-  alarm_description   = "High CPU on proj2 web instance"
-  treat_missing_data  = "notBreaching"
+  alarm_description  = "High CPU on proj2 web instance"
+  treat_missing_data = "notBreaching"
 
   dimensions = {
     InstanceId = aws_instance.web_private_a.id
   }
 
-  alarm_actions = []         # you can add SNS later
+  alarm_actions = [] # you can add SNS later
   ok_actions    = []
 }
