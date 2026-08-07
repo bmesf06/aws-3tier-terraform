@@ -66,3 +66,47 @@ This project deploys a three-tier web application architecture on AWS using Terr
 
 
 
+```mermaid
+graph TD
+    %% Define Elements
+    Internet((Internet)) --> IGW[Internet Gateway]
+    IGW --> ALB[Application Load Balancer]
+    
+    %% Availability Zone 1
+    subgraph AZ1 [Availability Zone: us-east-1a]
+        subgraph Pub1 [Public Subnet 10.0.1.0/24]
+            ALB
+        end
+        subgraph Priv1 [Private Subnet 10.0.11.0/24]
+            EC2_1[Nginx EC2 Instance 1]
+        end
+        subgraph DB1 [Database Subnet]
+            RDS[(MySQL RDS Primary)]
+        end
+    end
+
+    %% Availability Zone 2
+    subgraph AZ2 [Availability Zone: us-east-1b]
+        subgraph Pub2 [Public Subnet 10.0.2.0/24]
+            ALB
+        end
+        subgraph Priv2 [Private Subnet 10.0.12.0/24]
+            EC2_2[Nginx EC2 Instance 2]
+        end
+        subgraph DB2 [Database Subnet]
+            RDS
+        end
+    end
+
+    %% Traffic Routing Connections
+    ALB --> EC2_1
+    ALB --> EC2_2
+    EC2_1 --> RDS
+    EC2_2 --> RDS
+
+    %% Styling
+    style ALB fill:#a1887f,stroke:#333,stroke-width:2px
+    style RDS fill:#90caf9,stroke:#333,stroke-width:2px
+    style EC2_1 fill:#fff59d,stroke:#333,stroke-width:1px
+    style EC2_2 fill:#fff59d,stroke:#333,stroke-width:1px
+```
