@@ -67,46 +67,55 @@ This project deploys a three-tier web application architecture on AWS using Terr
 
 
 ```mermaid
-graph TD
-    %% Define Elements
+graph LR
+    %% Define Root Infrastructure Layer
     Internet((Internet)) --> IGW[Internet Gateway]
     IGW --> ALB[Application Load Balancer]
-    
-    %% Availability Zone 1
-    subgraph AZ1 [Availability Zone: us-east-1a]
-        subgraph Pub1 [Public Subnet 10.0.1.0/24]
-            ALB
+
+    %% Availability Zone A Structure
+    subgraph AZA [Availability Zone: us-east-1a]
+        direction TB
+        subgraph PubSub1 [Public Subnet: 10.0.1.0/24]
+            ALB_NodeA[ALB Node A]
         end
-        subgraph Priv1 [Private Subnet 10.0.11.0/24]
+        subgraph PrivSub1 [Private Subnet: 10.0.11.0/24]
             EC2_1[Nginx EC2 Instance 1]
         end
-        subgraph DB1 [Database Subnet]
-            RDS[(MySQL RDS Primary)]
+        subgraph DBSub1 [Database Subnet]
+            RDS_Primary[(MySQL RDS Primary)]
         end
     end
 
-    %% Availability Zone 2
-    subgraph AZ2 [Availability Zone: us-east-1b]
-        subgraph Pub2 [Public Subnet 10.0.2.0/24]
-            ALB
+    %% Availability Zone B Structure
+    subgraph AZB [Availability Zone: us-east-1b]
+        direction TB
+        subgraph PubSub2 [Public Subnet: 10.0.2.0/24]
+            ALB_NodeB[ALB Node B]
         end
-        subgraph Priv2 [Private Subnet 10.0.12.0/24]
+        subgraph PrivSub2 [Private Subnet: 10.0.12.0/24]
             EC2_2[Nginx EC2 Instance 2]
         end
-        subgraph DB2 [Database Subnet]
-            RDS
+        subgraph DBSub2 [Database Subnet]
+            RDS_Replica[(MySQL RDS Replica)]
         end
     end
 
-    %% Traffic Routing Connections
-    ALB --> EC2_1
-    ALB --> EC2_2
-    EC2_1 --> RDS
-    EC2_2 --> RDS
+    %% Infrastructure Routing Paths
+    ALB --> ALB_NodeA
+    ALB --> ALB_NodeB
+    ALB_NodeA --> EC2_1
+    ALB_NodeB --> EC2_2
+    EC2_1 --> RDS_Primary
+    EC2_2 --> RDS_Replica
 
-    %% Styling
-    style ALB fill:#a1887f,stroke:#333,stroke-width:2px
-    style RDS fill:#90caf9,stroke:#333,stroke-width:2px
-    style EC2_1 fill:#fff59d,stroke:#333,stroke-width:1px
-    style EC2_2 fill:#fff59d,stroke:#333,stroke-width:1px
+    %% Professional AWS Color Palette Styling
+    style Internet fill:#fff,stroke:#333,stroke-width:1px
+    style IGW fill:#fff,stroke:#333,stroke-width:1px
+    style ALB fill:#ff9900,stroke:#d68100,stroke-width:2px,color:#fff
+    style ALB_NodeA fill:#f2b65e,stroke:#d68100,stroke-width:1px
+    style ALB_NodeB fill:#f2b65e,stroke:#d68100,stroke-width:1px
+    style EC2_1 fill:#ff9900,stroke:#d68100,stroke-width:1px,color:#fff
+    style EC2_2 fill:#ff9900,stroke:#d68100,stroke-width:1px,color:#fff
+    style RDS_Primary fill:#3b7fbc,stroke:#2a5a84,stroke-width:2px,color:#fff
+    style RDS_Replica fill:#3b7fbc,stroke:#2a5a84,stroke-width:2px,color:#fff
 ```
